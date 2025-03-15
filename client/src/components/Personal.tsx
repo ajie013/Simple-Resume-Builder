@@ -3,7 +3,7 @@ import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { usePersonalInfoContext } from '../context/PersonalContext';
 import 'react-phone-number-input/style.css'
-
+import Loader from './Loader';
 
 const PersonalTab = () => {
     const { personalInfo, setPersonalInfo } = usePersonalInfoContext();

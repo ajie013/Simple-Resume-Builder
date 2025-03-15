@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
-import { lazy, Suspense } from "react"
+import { lazy, Suspense, useState } from "react"
 import PersonalTab from "./Personal";
 import {jsPDF} from 'jspdf'
 import { Button } from "./ui/button";
@@ -7,6 +7,7 @@ import { useEducationContext } from "../context/EducationContext";
 import { useExperienceContext } from "../context/ExperienceContext";
 import { usePersonalInfoContext } from "../context/PersonalContext";
 import { useSkillsContext } from "../context/SkillsContext";
+import Loader from "./Loader";
 
 const Education = lazy(() => import('./Education'));
 const Experience = lazy(() => import('./Experience'));
@@ -17,7 +18,11 @@ function Builder() {
     const {experience} = useExperienceContext();
     const {personalInfo} = usePersonalInfoContext();
     const {skills} = useSkillsContext();
+
     const doc = new jsPDF();
+
+
+    const [isLoading, setIsLoading] = useState(false)
     const centerText = (text: string) =>{
 
         const textWidth = doc.getTextWidth(text);
@@ -27,7 +32,8 @@ function Builder() {
     }
 
     const GenerateResume = () =>{
-       
+        setIsLoading(prev => !prev);
+        
         let yOffset = 20; 
        
         // --- Personal Information Section ---
@@ -86,7 +92,6 @@ function Builder() {
             yOffset += 15;
 
         }
-
        
          // --- Experience Section ---    
         if (experience.length > 0) {
@@ -137,7 +142,12 @@ function Builder() {
             yOffset += 15;
         }
 
-        doc.save('Sampe-Resume.pdf')
+        setTimeout(() => {
+            doc.save('Sampe-Resume.pdf');
+            setIsLoading(prev => !prev);
+            
+        }, 3000);
+    
 
     };
 
@@ -156,24 +166,24 @@ function Builder() {
                         <PersonalTab/>
                     </TabsContent>
                     <TabsContent value="experience">
-                        <Suspense fallback={<div>Loading...</div>}>
+                        <Suspense fallback={<Loader loaderStyle="h-8 w-8" contStyle="flex justify-center"/>}>
                             <Experience/>
                         </Suspense>         
                     </TabsContent>
                     <TabsContent value="education">
-                        <Suspense fallback={<div>Loading...</div>}>
+                        <Suspense fallback={<Loader loaderStyle="h-8 w-8" contStyle="flex justify-center"/>}>
                             <Education/>
                         </Suspense>    
                     </TabsContent>
                     <TabsContent value="skills">
-                        <Suspense fallback={<div>Loading...</div>}>
+                        <Suspense fallback={ <Loader loaderStyle="h-8 w-8" contStyle="flex justify-center"/>}>
                             <Skills/>
                         </Suspense>  
                     </TabsContent>
                 </Tabs>
             </div>
            
-            <Button className="block mx-auto mt-5" onClick={GenerateResume}>Generate Resume</Button>
+            <Button className="block mx-auto mt-5"  disabled={isLoading} onClick={GenerateResume}> {isLoading && <Loader loaderStyle="h-5 w-5"/>} Generate Resume</Button>
         </div>
     )
 }

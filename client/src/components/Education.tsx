@@ -6,6 +6,7 @@ import Education from '../types/Education';
 import generator from '../utils/IdGenerator';
 import { FaTrash } from "react-icons/fa";
 import popUpToast from '../lib/toast';
+import { Loader } from 'lucide-react';
 
 const EducationTab = () => {
 
@@ -37,7 +38,6 @@ const EducationTab = () => {
                     ))
                 )}
             </div>
-           
            
             <Button className='mx-auto mt-2 block' onClick={AddEducation}>Add Education</Button>
            
