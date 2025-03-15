@@ -4,7 +4,8 @@ import Skills from '../types/Skills';
 import { Button } from './ui/button';
 import generator from '../utils/IdGenerator';
 import { useSkillsContext } from '../context/SkillsContext';
-
+import { FaTrash } from "react-icons/fa";
+import popUpToast from '../lib/toast';
 const SkillsTab = () => {
 
     const {skills, setSkills} = useSkillsContext();
@@ -20,9 +21,12 @@ const SkillsTab = () => {
 
     return(
         <div className='space-y-1 flex flex-col'>
-            {skills.map((item ,index) =>       
-              <SkillItem key={index} item={item} setSkills={setSkills}/>           
-            )}
+            <div className="overflow-y-auto h-[300px] overflow-hidden text-center">
+                {skills.length === 0 ? (<span className='font-bold text-center tracking-wider'>No Skills</span>) : (skills.map((item ,index) =>       
+                    <SkillItem key={index} index={index} item={item} setSkills={setSkills}/>           
+                ))}
+           
+            </div>
            
             <Button className='mx-auto mt-2 block' onClick={AddSkill}>Add Skill</Button>
            
@@ -31,11 +35,12 @@ const SkillsTab = () => {
 }
 
 interface Props {
+    index: number;
     item : Skills;
     setSkills: React.Dispatch<React.SetStateAction<Skills[]>>
 }
  
-const SkillItem: React.FC<Props> = ({item, setSkills}) =>{
+const SkillItem: React.FC<Props> = ({index, item, setSkills}) =>{
    
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {value, id} = event.target;
@@ -49,11 +54,16 @@ const SkillItem: React.FC<Props> = ({item, setSkills}) =>{
         }))
     };
 
+    const DeleteSkill = () =>{
+        popUpToast('Notice', "Skill item has been deleted.");
+        setSkills(prev => prev.filter(skill => item.id !== skill.id));
+    }
   
     return(
-        <>   
-            <Input id='skill' value={item.skill} placeholder="Skill" onChange={handleChange}/>    
-        </>
+        <div className='flex justify-center items-center gap-2 mb-1'> 
+            <Input id='skill' value={item.skill} placeholder="Skill" onChange={handleChange}/>
+            <FaTrash className='text-red-600 text-[0.7rem]  cursor-pointer hover:scale-[1.1]' onClick={DeleteSkill}/>
+        </div>
     )
 }
 export default SkillsTab

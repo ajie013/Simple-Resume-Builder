@@ -11,9 +11,7 @@ const EducationContext = createContext<EducationContextType | null>(null);
 
 const EducationProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
-    const [education, setEducation] = useState<Education[]>([
-        {id: 1, schoolName: 'ACT', year: '', level: "", degree: ""}
-    ]);
+    const [education, setEducation] = useState<Education[]>([]);
 
     return (
         <EducationContext.Provider value={{education, setEducation}}>

@@ -5,6 +5,7 @@ import { ExperienceProvider } from './context/ExperienceContext'
 import { PersonalProvider } from './context/PersonalContext'
 import { SkillsProvider } from './context/SkillsContext'
 import './global.css'
+import { Toaster } from 'sonner';
 
 function App() {
    
@@ -15,6 +16,7 @@ function App() {
                     <EducationProvider>
                         <PersonalProvider>
                             <Builder/>
+                            <Toaster />
                         </PersonalProvider>
                     </EducationProvider>     
                 </ExperienceProvider>

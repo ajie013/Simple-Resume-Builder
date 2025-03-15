@@ -11,9 +11,7 @@ const ExperienceContext = createContext<ExperienceContextType | null>(null);
 
 const ExperienceProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
-    const [experience, setExperience] = useState<Experience[]>([
-        {id: 1, year: '', companyName: 'Accenture', title: 'Software Engineer', description: 'Ambot'}
-    ]);
+    const [experience, setExperience] = useState<Experience[]>([]);
 
     return (
         <ExperienceContext.Provider value={{experience, setExperience}}>

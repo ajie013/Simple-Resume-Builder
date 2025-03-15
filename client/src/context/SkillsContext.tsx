@@ -12,9 +12,7 @@ interface SkillsContextType{
 const SkillsContext = createContext<SkillsContextType | null>(null);
 
 const SkillsProvider: React.FC<{children: ReactNode}> = ({children}) =>{
-    const [skills, setSkills] = useState<Skills[]>([
-        {id: 1, skill: ''}
-    ])
+    const [skills, setSkills] = useState<Skills[]>([])
     return(
         <SkillsContext.Provider value={{skills, setSkills}}>
             {children}
