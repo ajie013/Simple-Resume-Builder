@@ -30,7 +30,11 @@ function Builder() {
                     <Education/>
                 </Suspense>    
             </TabsContent>
-            <TabsContent value="skills">Change your skills here.</TabsContent>
+            <TabsContent value="skills">
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Skills/>
+                </Suspense>  
+            </TabsContent>
         </Tabs>
     </div>
   

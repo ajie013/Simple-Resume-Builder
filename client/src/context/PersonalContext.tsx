@@ -1,23 +1,16 @@
 import React, { createContext, useContext, ReactNode, useState } from 'react';
-
-interface PersonalType {
-  fullName: string;
-  contact: string;
-  address: string;
-  email: string;
-  summary: string;
-}
+import Personal from '../types/Personal';
 
 interface PersonalContextType {
-  personalInfo: PersonalType;
-  setPersonalInfo: React.Dispatch<React.SetStateAction<PersonalType>>
+  personalInfo: Personal;
+  setPersonalInfo: React.Dispatch<React.SetStateAction<Personal>>
 }
 
 const PersonalContext = createContext<PersonalContextType | null>(null);
 
 const PersonalProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
-  const [personalInfo, setPersonalInfo] = useState<PersonalType>({
+  const [personalInfo, setPersonalInfo] = useState<Personal>({
     fullName: '',
     address: '',
     contact: '',
