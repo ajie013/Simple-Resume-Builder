@@ -243,7 +243,7 @@ function Builder() {
     return (
         <div className='h-screen flex items-start justify-center flex-col p-1'>
             <div className="w-full">
-                <h1 className="font-extrabold tracking-wider text-[1rem] md:text-[2rem] mb-3 text-center">Simple Resume Builder</h1>
+                <h1 className="font-extrabold tracking-wider text-[1rem] md:text-[1.8rem] mb-1 text-center">Simple Resume Builder</h1>
                 <Tabs defaultValue="personal" className="max-w-[600px] mx-auto h-[410px]  w-full border-gray-300 rounded border p-2">
                     <TabsList>
                         <TabsTrigger value="personal">Personal</TabsTrigger>
@@ -271,9 +271,10 @@ function Builder() {
                         </Suspense>  
                     </TabsContent>
                 </Tabs>
+                <span className="text-center block font-ligh text-[0.8rem]">Note: Access this site via web browsers</span>
             </div>
            
-            <Button className="block mx-auto mt-5"  disabled={isLoading} onClick={GenerateResume}> {isLoading && <Loader loaderStyle="h-5 w-5"/>} Generate Resume</Button>
+            <Button className="block mx-auto mt-2"  disabled={isLoading} onClick={GenerateResume}> {isLoading && <Loader loaderStyle="h-5 w-5"/>} Generate Resume</Button>
         </div>
     )
 }
