@@ -19,12 +19,12 @@ function Builder() {
     const {experience} = useExperienceContext();
     const {personalInfo} = usePersonalInfoContext();
     const {skills} = useSkillsContext();
-    const doc = new jsPDF();
+
     const [isLoading, setIsLoading] = useState(false);
 
     console.log('render builder')
     const centerText = (text: string) =>{
-
+        const doc = new jsPDF();
         const textWidth = doc.getTextWidth(text);
         const pageWidth = doc.internal.pageSize.getWidth();
         const xOffset = (pageWidth - textWidth) / 2;
@@ -106,133 +106,135 @@ function Builder() {
         }
     };
 
-    const GenerateResume = () =>{
-        if(!isValidPersonalInfo()) return;
-
-        if(!isValidEducation()) return;
-
-        if(!isValidExperience()) return;
-
-        if(!isValidSkills()) return;
-
+    const GenerateResume = () => {
+        if (!isValidPersonalInfo() || !isValidEducation() || !isValidExperience() || !isValidSkills()) return;
+    
         setIsLoading(prev => !prev);
-        
-        let yOffset = 20; 
-       
-        // --- Personal Information Section ---
+    
+        const doc = new jsPDF();
+        const pageHeight = doc.internal.pageSize.height;
+        let yOffset = 20;
+    
+        const checkPageLimit = (requiredSpace: number) => {
+            if (yOffset + requiredSpace > pageHeight - 20) {  
+                doc.addPage();
+                yOffset = 20; 
+            }
+        };
+    
+        // --- Personal Information ---
         doc.setFont("helvetica", "bold");
         doc.setFontSize(24);
         doc.text(personalInfo.fullName, centerText(personalInfo.fullName), yOffset);
         yOffset += 10;
-
+    
         doc.setFont("helvetica", "normal");
         doc.setFontSize(12);
         doc.text(`${personalInfo.address} | ${personalInfo.contact} | ${personalInfo.email}`, centerText(`${personalInfo.address} | ${personalInfo.contact} | ${personalInfo.email}`), yOffset);
-        yOffset += 20; // Add more space after personal info
-      
+        yOffset += 15;
+    
         // --- Summary Section ---
+        checkPageLimit(30);
         doc.setFont("helvetica", "bold");
         doc.setFontSize(16);
         doc.text("Summary", 20, yOffset);
         yOffset += 5;
-        doc.line(20, yOffset, 190, yOffset); 
+        doc.line(20, yOffset, 190, yOffset);
         yOffset += 10;
-      
+    
         doc.setFontSize(12);
         doc.setFont("helvetica", "normal");
-        doc.text(personalInfo.summary || "No summary provided.", 20, yOffset, { maxWidth: 170 });
-        
-        yOffset += 15; 
-
+    
+        let summaryLines = doc.splitTextToSize(personalInfo.summary || "No summary provided.", 170);
+        checkPageLimit(summaryLines.length * 6);
+        doc.text(summaryLines, 20, yOffset);
+        yOffset += summaryLines.length * 6 + 10;
+    
         // --- Education Section ---
-      
         if (education.length > 0) {
-
+            checkPageLimit(30);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(16);
             doc.text("Education", 20, yOffset);
             yOffset += 5;
-            doc.line(20, yOffset, 190, yOffset); 
+            doc.line(20, yOffset, 190, yOffset);
             yOffset += 10;
     
             doc.setFontSize(12);
             doc.setFont("helvetica", "normal");
-
+    
             education.forEach((edu) => {
-              
-                doc.text(edu.level, 20, yOffset, { maxWidth: 170 });
-                yOffset += 5; 
-                doc.text(edu.schoolName, 20, yOffset, { maxWidth: 170 });
-                yOffset += 5; 
-                doc.text(edu.year, 20, yOffset, { maxWidth: 170 });
-                yOffset += 5; 
-                if (edu.degree) {
-                    doc.text(edu.degree, 20, yOffset, { maxWidth: 170 });
-                }
-                yOffset += 5;
+                let eduLines = [
+                    edu.level,
+                    edu.schoolName,
+                    edu.year,
+                    edu.degree || ""
+                ].filter(Boolean);
+    
+                checkPageLimit(eduLines.length * 6 + 10);
+                doc.text(eduLines, 20, yOffset);
+                yOffset += eduLines.length * 6 + 5;
             });
-
-            yOffset += 15;
-
+    
+            yOffset += 10;
         }
-       
-         // --- Experience Section ---    
+    
+        // --- Experience Section ---
         if (experience.length > 0) {
-
+            checkPageLimit(30);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(16);
             doc.text("Experience", 20, yOffset);
             yOffset += 5;
-            doc.line(20, yOffset, 190, yOffset); 
+            doc.line(20, yOffset, 190, yOffset);
             yOffset += 10;
     
             doc.setFontSize(12);
             doc.setFont("helvetica", "normal");
-
+    
             experience.forEach((exp) => {
-               
-                doc.text(`${exp.companyName} | ${exp.year}`, 20, yOffset, { maxWidth: 170 });
-                yOffset += 5;
-                doc.text(exp.title, 20, yOffset, { maxWidth: 170 });
-                yOffset += 5;
-                doc.text(exp.description, 20, yOffset, { maxWidth: 170 });
-                yOffset += 5; 
+                let expLines = [
+                    `${exp.companyName} | ${exp.year}`,
+                    exp.title,
+                    ...doc.splitTextToSize(exp.description, 170)
+                ];
+    
+                checkPageLimit(expLines.length * 6 + 10);
+                doc.text(expLines, 20, yOffset);
+                yOffset += expLines.length * 6 + 5;
             });
-
-            yOffset += 15;
+    
+            yOffset += 10;
         }
-
-         // --- Skills Section ---    
+    
+        // --- Skills Section ---
         if (skills.length > 0) {
-
+            checkPageLimit(30);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(16);
             doc.text("Technical Skills", 20, yOffset);
             yOffset += 5;
-            doc.line(20, yOffset, 190, yOffset); 
+            doc.line(20, yOffset, 190, yOffset);
             yOffset += 10;
     
             doc.setFontSize(12);
             doc.setFont("helvetica", "normal");
-
+    
             skills.forEach((skill) => {
-               
-                doc.text(`• ${skill.skill}`, 20, yOffset, { maxWidth: 170 });
+                checkPageLimit(10);
+                doc.text(`• ${skill.skill}`, 20, yOffset);
                 yOffset += 5;
-               
             });
-
+    
             yOffset += 15;
         }
-
-        setTimeout(() => {
-            doc.save('Sampe-Resume.pdf');
-            setIsLoading(prev => !prev);
-            
-        }, 3000);
     
-
+        setTimeout(() => {
+            doc.save("Sample-Resume.pdf");
+            setIsLoading(prev => !prev);
+        }, 2000);
     };
+    
 
     return (
         <div className='h-screen flex items-start justify-center flex-col p-1'>

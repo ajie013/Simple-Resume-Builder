@@ -23,7 +23,7 @@ const SkillsTab = () => {
 
     return(
         <div className='space-y-1 flex flex-col'>
-            <div className="overflow-hidden max-h-[300px] text-center">
+            <div className="overflow-auto max-h-[300px] text-center">
                 {skills.length === 0 ? (<span className='font-bold text-center tracking-wider'>No Skills</span>) : (skills.map((item ,index) =>       
                     <SkillItem key={index} item={item} setSkills={setSkills}/>           
                 ))}  

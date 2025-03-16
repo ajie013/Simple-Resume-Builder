@@ -26,7 +26,7 @@ const ExperienceTab = () => {
 
     return (
         <div className='flex flex-col'>
-            <div className='overflow-hidden max-h-[300px] w-full'>
+            <div className='overflow-auto max-h-[300px] w-full'>
                 {experience.length === 0 ? (
                     <span className='font-bold text-center tracking-wider block'>
                         No Experience
