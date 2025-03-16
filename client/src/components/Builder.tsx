@@ -21,10 +21,10 @@ function Builder() {
     const {skills} = useSkillsContext();
 
     const [isLoading, setIsLoading] = useState(false);
-
-    console.log('render builder')
+    const doc = new jsPDF();
+   
     const centerText = (text: string) =>{
-        const doc = new jsPDF();
+       
         const textWidth = doc.getTextWidth(text);
         const pageWidth = doc.internal.pageSize.getWidth();
         const xOffset = (pageWidth - textWidth) / 2;
@@ -111,7 +111,7 @@ function Builder() {
     
         setIsLoading(prev => !prev);
     
-        const doc = new jsPDF();
+       
         const pageHeight = doc.internal.pageSize.height;
         let yOffset = 20;
     
@@ -139,6 +139,7 @@ function Builder() {
         doc.setFontSize(16);
         doc.text("Summary", 20, yOffset);
         yOffset += 5;
+        doc.setLineWidth(1.5);
         doc.line(20, yOffset, 190, yOffset);
         yOffset += 10;
     
@@ -275,3 +276,5 @@ function Builder() {
 }
 
 export default Builder
+
+
