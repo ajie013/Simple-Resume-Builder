@@ -6,6 +6,7 @@ import generator from '../utils/IdGenerator';
 import { useSkillsContext } from '../context/SkillsContext';
 import { FaTrash } from "react-icons/fa";
 import popUpToast from '../lib/toast';
+
 const SkillsTab = () => {
 
     const {skills, setSkills} = useSkillsContext();
@@ -22,26 +23,23 @@ const SkillsTab = () => {
 
     return(
         <div className='space-y-1 flex flex-col'>
-            <div className="overflow-y-auto max-h-[300px] overflow-hidden text-center">
+            <div className="overflow-hidden max-h-[300px] text-center">
                 {skills.length === 0 ? (<span className='font-bold text-center tracking-wider'>No Skills</span>) : (skills.map((item ,index) =>       
-                    <SkillItem key={index} index={index} item={item} setSkills={setSkills}/>           
-                ))}
-           
+                    <SkillItem key={index} item={item} setSkills={setSkills}/>           
+                ))}  
             </div>
            
-            <Button className='mx-auto mt-2 block' onClick={AddSkill}>Add Skill</Button>
-           
+            <Button className='mx-auto mt-2 block' onClick={AddSkill}>Add Skill</Button>  
         </div>
     )
 }
 
 interface Props {
-    index: number;
     item : Skills;
     setSkills: React.Dispatch<React.SetStateAction<Skills[]>>
 }
  
-const SkillItem: React.FC<Props> = ({index, item, setSkills}) =>{
+const SkillItem: React.FC<Props> = ({item, setSkills}) =>{
    
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {value, id} = event.target;
@@ -67,4 +65,5 @@ const SkillItem: React.FC<Props> = ({index, item, setSkills}) =>{
         </div>
     )
 }
+
 export default SkillsTab

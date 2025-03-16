@@ -22,6 +22,7 @@ function Builder() {
     const doc = new jsPDF();
     const [isLoading, setIsLoading] = useState(false);
 
+    console.log('render builder')
     const centerText = (text: string) =>{
 
         const textWidth = doc.getTextWidth(text);
@@ -102,9 +103,8 @@ function Builder() {
             }
 
             return isValidInputs;
-
         }
-    }
+    };
 
     const GenerateResume = () =>{
         if(!isValidPersonalInfo()) return;
@@ -112,7 +112,7 @@ function Builder() {
         if(!isValidEducation()) return;
 
         if(!isValidExperience()) return;
-        
+
         if(!isValidSkills()) return;
 
         setIsLoading(prev => !prev);
@@ -235,11 +235,10 @@ function Builder() {
     };
 
     return (
-        <div className='h-[100vh] flex items-start justify-center  flex-col'>
-            
+        <div className='h-screen flex items-start justify-center flex-col p-1'>
             <div className="w-full">
-                <h1 className="font-extrabold tracking-wider text-3xl mb-3 text-center">Simple Resume Builder</h1>
-                <Tabs defaultValue="personal" className="max-w-[600px] mx-auto h-[410px]  w-[100%] border-gray-300 rounded border p-2">
+                <h1 className="font-extrabold tracking-wider text-[1rem] md:text-[2rem] mb-3 text-center">Simple Resume Builder</h1>
+                <Tabs defaultValue="personal" className="max-w-[600px] mx-auto h-[410px]  w-full border-gray-300 rounded border p-2">
                     <TabsList>
                         <TabsTrigger value="personal">Personal</TabsTrigger>
                         <TabsTrigger value="education">Education</TabsTrigger>
