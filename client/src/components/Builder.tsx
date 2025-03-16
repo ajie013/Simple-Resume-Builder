@@ -33,7 +33,7 @@ function Builder() {
 
     const isValidPersonalInfo = () =>{
         if(!personalInfo.address || !personalInfo.email || !personalInfo.contact || !personalInfo.fullName || !personalInfo.summary){
-            popUpToast('Oops!', "Fill out all required in the Personal Tab.")
+            popUpToast('Oops!', "Fill out all required information in the Personal Tab.")
             return false;
         }
 
@@ -231,7 +231,10 @@ function Builder() {
         }
     
         setTimeout(() => {
-            doc.save("Sample-Resume.pdf");
+            // doc.save("Sample-Resume.pdf");
+            const blob = doc.output('blob');
+            const blobUrl = URL.createObjectURL(blob);
+            window.open(blobUrl, '_blank'); 
             setIsLoading(prev => !prev);
         }, 2000);
     };
