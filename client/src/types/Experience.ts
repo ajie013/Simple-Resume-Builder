@@ -1,5 +1,3 @@
-import { StringToBoolean } from "class-variance-authority/types";
-
 interface Experience{
     id: number;
     companyName: string;
