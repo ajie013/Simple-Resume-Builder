@@ -16,12 +16,13 @@ const SkillsTab = () => {
             skill: ''
         };
 
-        setSkills(prev => [...prev, newSkill])
+        setSkills(prev => [...prev, newSkill]);
+        popUpToast('Notice', "New skill item has been added.");
     }
 
     return(
         <div className='space-y-1 flex flex-col'>
-            <div className="overflow-y-auto h-[300px] overflow-hidden text-center">
+            <div className="overflow-y-auto max-h-[300px] overflow-hidden text-center">
                 {skills.length === 0 ? (<span className='font-bold text-center tracking-wider'>No Skills</span>) : (skills.map((item ,index) =>       
                     <SkillItem key={index} index={index} item={item} setSkills={setSkills}/>           
                 ))}

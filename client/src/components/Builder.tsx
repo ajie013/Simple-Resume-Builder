@@ -8,6 +8,7 @@ import { useExperienceContext } from "../context/ExperienceContext";
 import { usePersonalInfoContext } from "../context/PersonalContext";
 import { useSkillsContext } from "../context/SkillsContext";
 import Loader from "./Loader";
+import popUpToast from "../lib/toast";
 
 const Education = lazy(() => import('./Education'));
 const Experience = lazy(() => import('./Experience'));
@@ -18,11 +19,9 @@ function Builder() {
     const {experience} = useExperienceContext();
     const {personalInfo} = usePersonalInfoContext();
     const {skills} = useSkillsContext();
-
     const doc = new jsPDF();
+    const [isLoading, setIsLoading] = useState(false);
 
-
-    const [isLoading, setIsLoading] = useState(false)
     const centerText = (text: string) =>{
 
         const textWidth = doc.getTextWidth(text);
@@ -31,7 +30,91 @@ function Builder() {
         return xOffset
     }
 
+    const isValidPersonalInfo = () =>{
+        if(!personalInfo.address || !personalInfo.email || !personalInfo.contact || !personalInfo.fullName || !personalInfo.summary){
+            popUpToast('Oops!', "Fill out all required in the Personal Tab.")
+            return false;
+        }
+
+        return true
+    }
+
+    const isValidEducation = () => {
+        if(education.length === 0){
+            return true;
+        }
+        else{
+            const isValidInputs = education.every((item) => {
+                if(item.schoolName || item.level || item.year){
+                    return true
+                }
+                else{
+                    return false
+                }
+            });
+
+            if(!isValidInputs){
+                popUpToast('Oops!', "Fill out all required information in the Education Tab.");
+            }
+
+            return isValidInputs
+        }
+    }
+
+    const isValidExperience = () =>{
+        if(experience.length === 0){
+            return true;
+        }
+        else{
+            const isValidInputs = experience.every((item) => {
+                if(item.companyName || item.description || item.title || item.year){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            });
+
+            if(!isValidInputs){
+                popUpToast('Oops!', "Fill out all required information in the Experience Tab.")
+            }
+
+            return isValidInputs;
+        }
+    }
+
+    const isValidSkills = () =>{
+        if(skills.length === 0){
+            return true;
+        }
+        else{
+            const isValidInputs = skills.every((item) =>{
+                if(item.skill){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            });
+
+            if(!isValidInputs){
+                popUpToast('Oops!', "Fill out all required information in the Skills Tab.")
+            }
+
+            return isValidInputs;
+
+        }
+    }
+
     const GenerateResume = () =>{
+        if(!isValidPersonalInfo()) return;
+
+        if(!isValidEducation()) return;
+
+        if(!isValidExperience()) return;
+        
+        if(!isValidSkills()) return;
+
         setIsLoading(prev => !prev);
         
         let yOffset = 20; 
@@ -153,7 +236,9 @@ function Builder() {
 
     return (
         <div className='h-[100vh] flex items-start justify-center  flex-col'>
+            
             <div className="w-full">
+                <h1 className="font-extrabold tracking-wider text-3xl mb-3 text-center">Simple Resume Builder</h1>
                 <Tabs defaultValue="personal" className="max-w-[600px] mx-auto h-[410px]  w-[100%] border-gray-300 rounded border p-2">
                     <TabsList>
                         <TabsTrigger value="personal">Personal</TabsTrigger>

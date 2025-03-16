@@ -19,7 +19,7 @@ const PersonalTab = () => {
             <Input id='address' type='text' placeholder='Address' value={personalInfo.address} onChange={handleChange} />
             <Input id='email' type='email' placeholder='Email' value={personalInfo.email} onChange={handleChange} required />
             <Input id='contact' type='text' placeholder='Contact Number' value={personalInfo.contact} onChange={handleChange} required />
-            <Textarea id='summary' placeholder='Summary' className='max-h-[150px]' value={personalInfo.summary} onChange={handleChange} required />    
+            <Textarea id='summary' placeholder='Summary' className='min-h-[130px] max-h-[150px]' value={personalInfo.summary} onChange={handleChange} required />    
         </div>
     );
 };

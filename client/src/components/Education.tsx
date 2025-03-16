@@ -6,7 +6,7 @@ import Education from '../types/Education';
 import generator from '../utils/IdGenerator';
 import { FaTrash } from "react-icons/fa";
 import popUpToast from '../lib/toast';
-import { Loader } from 'lucide-react';
+
 
 const EducationTab = () => {
 
@@ -21,12 +21,13 @@ const EducationTab = () => {
             level: ''
         };
 
-        setEducation(prev => [...prev, newEducation])
+        setEducation(prev => [...prev, newEducation]);
+        popUpToast('Notice', "New education item has been added.");
     }
 
     return(
         <div className='space-y-1 flex flex-col'>
-           <div className="overflow-y-auto h-[300px] overflow-hidden text-center"> {/* Set a fixed height and enable scrolling */}
+           <div className="overflow-y-auto max-h-[300px] overflow-hidden text-center">
                 {education.length === 0 ? (
                     <span className='font-bold text-center tracking-wider'>No Education</span>
                 ) : (

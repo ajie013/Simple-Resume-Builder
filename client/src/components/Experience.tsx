@@ -28,7 +28,7 @@ const ExperienceTab = () => {
 
     return(
         <div className='space-y-1 flex flex-col relative'>
-            <div className="overflow-y-auto h-[300px] overflow-hidden text-center">
+            <div className="overflow-y-auto max-h-[300px] overflow-hidden text-center">
                 {experience.length == 0 ? (<span className='font-bold text-center tracking-wider'>No Experience</span>) :
                 (experience.map((item ,index) => 
                     <>
